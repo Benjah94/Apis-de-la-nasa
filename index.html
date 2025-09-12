@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>NASA API</title>
+  <link rel="stylesheet" href="ApiNasa.css">
+</head>
+<body>
+  <h2>Foto de la NASA</h2>
+  <button id="dia">Foto del día</button>
+  <input type="date" id="fecha">
+  <button id="fechaBtn">Buscar por fecha</button>
+  <input type="number" id="aleatorio" value="2" min="1" max="5">
+  <button id="aleatorioBtn">Foto aleatoria</button>
+  <br><br>
+  <div id="resultado"></div>
+  <script>
+    let API = "PnfTdhzcF0kCOilpRqi7iUa4QMBmxUoGQ9uDPUPp";
+    let resultado = document.getElementById("resultado");
+    let dia = document.getElementById("dia");
+    let fechaBtn = document.getElementById("fechaBtn");
+    let aleatorioBtn = document.getElementById("aleatorioBtn");
+    let fecha = document.getElementById("fecha");
+    let aleatorio = document.getElementById("aleatorio");
+
+    dia.onclick = function() {
+      fetch("https://api.nasa.gov/planetary/apod?api_key=" + API)
+        .then(function(x){ return x.text(); })
+        .then(function(txt){
+          let f = JSON.parse(txt);
+          resultado.innerHTML = '<img src="' + f.url + '" width="300"><br>' + f.title + '<br>' + f.date;
+        });
+    };
+
+    fechaBtn.onclick = function() {
+      let f = fecha.value;
+      fetch("https://api.nasa.gov/planetary/apod?api_key=" + API + "&date=" + f)
+        .then(function(x){ return x.text(); })
+        .then(function(txt){
+          let f = JSON.parse(txt);
+          resultado.innerHTML = '<img src="' + f.url + '" width="300"><br>' + f.title + '<br>' + f.date;
+        });
+    };
+
+    aleatorioBtn.onclick = function() {
+      let n = aleatorio.value;
+      fetch("https://api.nasa.gov/planetary/apod?api_key=" + API + "&count=" + n)
+        .then(function(x){ return x.text(); })
+        .then(function(txt){
+          let fs = JSON.parse(txt);
+          resultado.innerHTML = '<img src="' + fs[0].url + '" width="300"><br>' + fs[0].title + '<br>' + fs[0].date;
+        });
+    };
+  </script>
+</body>
+<script src="ApINasa.js"></script>
+</html>
